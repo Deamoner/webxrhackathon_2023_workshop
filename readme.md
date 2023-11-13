@@ -1,9 +1,13 @@
 # Welcome to the AWS WebXR workshop
+
 In this workshop, you will discover how to leverage a suite of AWS services to create a robust backend for your WebXR application. You'll learn how to host your app and make it publicly accessible via a URL, as well as how to efficiently render your assets from the cloud.
+
+> This workshop is centered around the Meta WebXR showcase example, [Flap Frenzy](https://github.com/felixtrz/flap-frenzy). However, it specifically focuses on AWS usage within this context. For more information on the WebXR aspects of the app, please refer to the repository's example.
 
 ![Diagram Image](./webXR.png)
 
-# AWS CDK 
+# AWS CDK
+
 In this workshop, we're utilizing the power of AWS Cloud Development Kit (AWS CDK) to streamline the setup of our backend services. AWS CDK provides a high-level, programmatic approach to defining cloud resources, allowing us to create complex infrastructure setups with just a few lines of code. With AWS CDK, we'll be able to rapidly provision and manage the services that form the backbone of our WebXR application, including hosting and asset rendering, all directly within the workshop environment. Experience firsthand the efficiency and flexibility that AWS CDK brings to cloud development.
 
 # Prerequisite:
@@ -15,7 +19,8 @@ Install the AWS CLI (skip if already installed on your system).
 ```
 pip install awscli
 ```
-or 
+
+or
 
 ```
 brew install awscli
@@ -26,6 +31,7 @@ Configure the AWS CLI with your credentials, and set the default region to us-ea
 ```
 aws configure
 ```
+
 Install the AWS CDK CLI.
 
 ```
@@ -40,4 +46,5 @@ cdk bootstrap aws://<REPLACE_WITH_YOUR_AWS_ACCT_NUMBER>/<REPLACE_WITH_AWS_REGION
 ```
 
 # Jump to workshop one:
+
 You're all set to start with workshop one, click here -> [workshop_one](https://gitlab.aws.dev/hukaiyin/webxrhackathon_2023_workshop/-/tree/workshop_one?ref_type=heads) or select "workshop_one" from this repository's branches to access the README.
