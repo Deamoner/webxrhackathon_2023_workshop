@@ -21,7 +21,7 @@ or
 brew install awscli
 ```
 
-Configure the AWS CLI with your credentials, and set the default region to us-east-1 or us-west-2 (skip if already configured).
+Configure the AWS CLI with your credentials, and set the default region to us-east-1 or us-west-2 (skip if already configured). See how to create and find your credentials from this [link](https://catalog.us-east-1.prod.workshops.aws/workshops/0ec8648d-8d3e-43d2-84ee-26c85152993b/en-US/configuration).
 
 ```
 aws configure
