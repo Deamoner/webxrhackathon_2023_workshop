@@ -8,30 +8,36 @@ In this workshop, we're utilizing the power of AWS Cloud Development Kit (AWS CD
 
 # Prerequisite:
 
-CDK setup: if you haven't had AWS CLI and AWS CDK set up, make sure you install aws cli first. 
+## CDK Setup
+
+Install the AWS CLI (skip if already installed on your system).
 
 ```
-pip install awscli 
-
+pip install awscli
 ```
 or 
 
 ```
-brew install awscli 
-
+brew install awscli
 ```
 
-Run AWS CLI with the appropriate credentials and default region - please set the default region to us-east-1 
+Configure the AWS CLI with your credentials, and set the default region to us-east-1 or us-west-2 (skip if already configured).
 
 ```
-aws configure 
-
+aws configure
 ```
-Install the AWS CDK CLI by 
+Install the AWS CDK CLI.
 
 ```
 npm install -g aws-cdk
 ```
 
+Check CDK installation, and bootstrap your AWS account. Bootstrapping sets up resources (e.g. S3 bucket) for CDK to function in the target account and region (e.g. us-west-2).
+
+```
+cdk --version
+cdk bootstrap aws://<REPLACE_WITH_YOUR_AWS_ACCT_NUMBER>/<REPLACE_WITH_AWS_REGION_CODE>
+```
+
 # Jump to workshop one:
-Select [workshop_one](https://gitlab.aws.dev/hukaiyin/webxrhackathon_2023_workshop/-/tree/workshop_one?ref_type=heads) from this repository's branches, and check out the code of this branch. 
+You're all set to start with workshop one, click here -> [workshop_one](https://gitlab.aws.dev/hukaiyin/webxrhackathon_2023_workshop/-/tree/workshop_one?ref_type=heads) or select "workshop_one" from this repository's branches to access the README.
