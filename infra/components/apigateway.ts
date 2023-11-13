@@ -129,8 +129,8 @@ export class restGateway extends apig.RestApi {
     AttachWebACL(scope: Construct, id: string) {
         const webACL = this.GetWebACL(scope, id);
         return new cdk.aws_wafv2.CfnWebACLAssociation(
-            scope,
-            id + '_CDKWebACLAssoc',
+            this,
+            this.id + '_CDKWebACLAssoc',
             {
                 webAclArn: webACL.attrArn,
                 resourceArn: this.GetAPIGatewayArn()

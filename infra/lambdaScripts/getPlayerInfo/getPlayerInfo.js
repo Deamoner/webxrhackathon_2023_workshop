@@ -81,7 +81,7 @@ const getWorldRecordAndRanking = async (playerId) => {
 
 export const handler = async (event, context) => {
     try {
-        const playerId = event.pathParameters.playerId;
+        const playerId = event.pathParameters.playerId.toLowerCase();
 
         const recordScore = await getPlayerRecordScore(playerId);
 

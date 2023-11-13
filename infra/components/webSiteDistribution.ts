@@ -4,7 +4,6 @@ import { Construct } from 'constructs';
 import * as wafv2 from 'aws-cdk-lib/aws-wafv2';
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
-import * as helpers from './helperScripts';
 import { S3Bucket } from './s3';
 import * as path from 'path';
 import { restGateway } from './apigateway';
@@ -30,8 +29,7 @@ export class WebSiteDeployment extends cdk.NestedStack {
     const s3Origin = new cloudfrontOrigins.S3Origin(this.deploymentBucket, {
       originAccessIdentity: originalAccessIdentity
     });
-    //const webacl = this.GetWebACL(scope, id);
-    this.cloudfrontDistribution=this.CreateCloudFrontDistribution(scope, id + "_CFD", s3Origin, rootObject);//, webacl);
+    this.cloudfrontDistribution=this.CreateCloudFrontDistribution(scope, id + "_CFD", s3Origin, rootObject);
   }
   CreateCloudFrontDistribution(scope: Construct, id: string, s3Origin: cloudfrontOrigins.S3Origin, filePath: string, webACL?: wafv2.CfnWebACL) {
     return new cloudfront.Distribution(
@@ -57,7 +55,6 @@ export class WebSiteDeployment extends cdk.NestedStack {
         },
       ],
       defaultRootObject: filePath,
-      //webAclId: webACL.attrArn,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021, // Required by security
 
     }
@@ -90,24 +87,6 @@ export class WebSiteDeployment extends cdk.NestedStack {
       },
     });
     return responseHeadersPolicy;
-
-
-  }
-  GetWebACL(scope: Construct, id: string) {
-    const wafWebACL = new wafv2.CfnWebACL(scope, id + "_WebACL",
-      {
-        description: "BasicWAF",
-        defaultAction: {
-          allow: {},
-        },
-        scope: 'CLOUDFRONT',
-        visibilityConfig: {
-          cloudWatchMetricsEnabled: true,
-          metricName: "WAFACLGLOBAL",
-          sampledRequestsEnabled: true
-        }
-      });
-    return wafWebACL
   }
   ExportConfig() {
     return {

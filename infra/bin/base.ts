@@ -4,7 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import { MainStack } from '../lib/main';
 
 const app = new cdk.App();
-new MainStack(app,"WorkshopTwo", {
+new MainStack(app,"WorkshopThree", {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

@@ -49,8 +49,15 @@ export class Main {
     }
 
     //Make Nested Lambda Stack(s)
+    /**
+     Uncomment this line to add getAsset Lambda function, workshop three step 1.1
+    const getAssetLambda = new LambdaStack(scope, "getAssetLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/getAsset', 'handler', cdk.Duration.minutes(5), 512, 512, storageEnvs);
+    */
     const getHighScoreLambda = new LambdaStack(scope, "getPlayerInfoLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/getPlayerInfo', 'handler', cdk.Duration.minutes(5), 512, 512, highScoreEnvs);
     const putHighScoreLambda = new LambdaStack(scope, "putPlayerRecordLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/putPlayerRecord', 'handler', cdk.Duration.minutes(5), 512, 512, highScoreEnvs);
+
+    //Grant Lambda functions read/write access to S3 bucket
+    storageBucket.grantReadWrite(getAssetLambda.lambdaFunction);
 
     //Grant Lambda functions read/write access to DDB table
     leaderboardDatabase.grantReadData(getHighScoreLambda.lambdaFunction);
@@ -61,19 +68,21 @@ export class Main {
   
     //Build API Gateway
     const apiGateway = new restGatewayNestedStack(scope, "gateway", "Main Stack Gateway", "dev").gateway;
-
-    /** Workshop two step 1.1, uncomment this code block to enable API Gateway with a Cognito authorizer enabled 
     const apiAuthorizer = apiGateway.AddCognitoAuthorizer(scope, "API_Authorizer", [cognitoStack.userPool])
+
+    /** Uncomment this line to add the API Gateway for getAsset Lambda function, workshop step 1.2 
+    apiGateway.AddMethodIntegration(getAssetLambda.MethodIntegration(), "assets", "GET", apiAuthorizer);
+    */
+
     apiGateway.AddMethodIntegration(putHighScoreLambda.MethodIntegration(), "leaderboard", "POST", apiAuthorizer);
     apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderboard/{playerId}", "GET", apiAuthorizer);
-    */
 
     //Upload Website
     const website = new WebSiteDeployment(scope, "webDeployment", '../../web/dist', 'index.html', apiGateway, storageBucket);
-    const configJson = {
+     const configJson = {
          ...storageBucket.ExportConfig(),
-         ...apiGateway.ExportConfig(),
          ...cognitoStack.ExportConfig(),
+         ...apiGateway.ExportConfig(),
          ...website.ExportConfig()
     }
 
