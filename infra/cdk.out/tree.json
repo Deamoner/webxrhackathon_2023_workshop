@@ -1,0 +1,2356 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "WorkshopOne": {
+        "id": "WorkshopOne",
+        "path": "WorkshopOne",
+        "children": {
+          "StorageBucket": {
+            "id": "StorageBucket",
+            "path": "WorkshopOne/StorageBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/StorageBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketEncryption": {
+                      "serverSideEncryptionConfiguration": [
+                        {
+                          "serverSideEncryptionByDefault": {
+                            "sseAlgorithm": "AES256"
+                          }
+                        }
+                      ]
+                    },
+                    "corsConfiguration": {
+                      "corsRules": [
+                        {
+                          "allowedHeaders": [
+                            "*"
+                          ],
+                          "allowedMethods": [
+                            "GET",
+                            "POST",
+                            "PUT"
+                          ],
+                          "allowedOrigins": [
+                            "*"
+                          ]
+                        }
+                      ]
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    },
+                    "tags": [
+                      {
+                        "key": "aws-cdk:auto-delete-objects",
+                        "value": "true"
+                      },
+                      {
+                        "key": "aws-cdk:cr-owned:47257bc5",
+                        "value": "true"
+                      }
+                    ],
+                    "versioningConfiguration": {
+                      "status": "Enabled"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.88.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "WorkshopOne/StorageBucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/StorageBucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "StorageBucket19DB2FF8"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageBucket19DB2FF8",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageBucket19DB2FF8",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "s3:DeleteObject*",
+                                "s3:GetBucket*",
+                                "s3:List*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::GetAtt": [
+                                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                                    "Arn"
+                                  ]
+                                }
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageBucket19DB2FF8",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageBucket19DB2FF8",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "s3:GetBucket*",
+                                "s3:GetObject*",
+                                "s3:List*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "webDeploymentNestedStackwebDeploymentNestedStackResource0F82DA22",
+                                    "Outputs.WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACS3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageBucket19DB2FF8",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageBucket19DB2FF8",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": "s3:GetObject",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "webDeploymentNestedStackwebDeploymentNestedStackResource0F82DA22",
+                                    "Outputs.WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACS3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StorageBucket19DB2FF8",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.88.0"
+                }
+              },
+              "AutoDeleteObjectsCustomResource": {
+                "id": "AutoDeleteObjectsCustomResource",
+                "path": "WorkshopOne/StorageBucket/AutoDeleteObjectsCustomResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "WorkshopOne/StorageBucket/AutoDeleteObjectsCustomResource/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.88.0"
+            }
+          },
+          "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
+            "id": "Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "path": "WorkshopOne/Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "children": {
+              "Staging": {
+                "id": "Staging",
+                "path": "WorkshopOne/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.AssetStaging",
+                  "version": "2.88.0"
+                }
+              },
+              "Role": {
+                "id": "Role",
+                "path": "WorkshopOne/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.88.0"
+                }
+              },
+              "Handler": {
+                "id": "Handler",
+                "path": "WorkshopOne/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CustomResourceProvider",
+              "version": "2.88.0"
+            }
+          },
+          "LeaderboardDatabase": {
+            "id": "LeaderboardDatabase",
+            "path": "WorkshopOne/LeaderboardDatabase",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/LeaderboardDatabase/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "playerId",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "status",
+                        "attributeType": "N"
+                      },
+                      {
+                        "attributeName": "score",
+                        "attributeType": "N"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "globalSecondaryIndexes": [
+                      {
+                        "indexName": "rankingIndex",
+                        "keySchema": [
+                          {
+                            "attributeName": "status",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "score",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "projection": {
+                          "projectionType": "ALL"
+                        }
+                      }
+                    ],
+                    "keySchema": [
+                      {
+                        "attributeName": "playerId",
+                        "keyType": "HASH"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.88.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "WorkshopOne/LeaderboardDatabase/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.88.0"
+            }
+          },
+          "getPlayerInfoLambda": {
+            "id": "getPlayerInfoLambda",
+            "path": "WorkshopOne/getPlayerInfoLambda",
+            "children": {
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "WorkshopOne/getPlayerInfoLambda/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "WorkshopOne/getPlayerInfoLambda/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "WorkshopOne/getPlayerInfoLambda/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.69"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.NestedStack",
+              "version": "2.88.0"
+            }
+          },
+          "getPlayerInfoLambda.NestedStack": {
+            "id": "getPlayerInfoLambda.NestedStack",
+            "path": "WorkshopOne/getPlayerInfoLambda.NestedStack",
+            "children": {
+              "getPlayerInfoLambda.NestedStackResource": {
+                "id": "getPlayerInfoLambda.NestedStackResource",
+                "path": "WorkshopOne/getPlayerInfoLambda.NestedStack/getPlayerInfoLambda.NestedStackResource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::Stack",
+                  "aws:cdk:cloudformation:props": {
+                    "templateUrl": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "https://s3.",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ".",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/",
+                          {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "/d8cad328ba02f102e1968750f8363908da3d1a9cd493306b20415c6b6ffd3df4.json"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnStack",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          },
+          "getPlayerInfoLambda_FUNC": {
+            "id": "getPlayerInfoLambda_FUNC",
+            "path": "WorkshopOne/getPlayerInfoLambda_FUNC",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "WorkshopOne/getPlayerInfoLambda_FUNC/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "WorkshopOne/getPlayerInfoLambda_FUNC/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/getPlayerInfoLambda_FUNC/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "WorkshopOne/getPlayerInfoLambda_FUNC/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "WorkshopOne/getPlayerInfoLambda_FUNC/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "LeaderboardDatabase1341F1A0",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "LeaderboardDatabase1341F1A0",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "getPlayerInfoLambdaFUNCServiceRoleDefaultPolicy588944D8",
+                            "roles": [
+                              {
+                                "Ref": "getPlayerInfoLambdaFUNCServiceRole3009444E"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.88.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.88.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "WorkshopOne/getPlayerInfoLambda_FUNC/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "WorkshopOne/getPlayerInfoLambda_FUNC/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "WorkshopOne/getPlayerInfoLambda_FUNC/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.88.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/getPlayerInfoLambda_FUNC/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "c4c2fdac1a49cffb97d845008076180c9fe832855018df35cb9442c7bc09fa55.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "LeaderboardDatabase1341F1A0"
+                        }
+                      }
+                    },
+                    "ephemeralStorage": {
+                      "size": 512
+                    },
+                    "handler": "getPlayerInfo.handler",
+                    "memorySize": 512,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "getPlayerInfoLambdaFUNCServiceRole3009444E",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 300
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.88.0"
+            }
+          },
+          "putPlayerRecordLambda": {
+            "id": "putPlayerRecordLambda",
+            "path": "WorkshopOne/putPlayerRecordLambda",
+            "children": {
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "WorkshopOne/putPlayerRecordLambda/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "WorkshopOne/putPlayerRecordLambda/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "WorkshopOne/putPlayerRecordLambda/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.69"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.NestedStack",
+              "version": "2.88.0"
+            }
+          },
+          "putPlayerRecordLambda.NestedStack": {
+            "id": "putPlayerRecordLambda.NestedStack",
+            "path": "WorkshopOne/putPlayerRecordLambda.NestedStack",
+            "children": {
+              "putPlayerRecordLambda.NestedStackResource": {
+                "id": "putPlayerRecordLambda.NestedStackResource",
+                "path": "WorkshopOne/putPlayerRecordLambda.NestedStack/putPlayerRecordLambda.NestedStackResource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::Stack",
+                  "aws:cdk:cloudformation:props": {
+                    "templateUrl": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "https://s3.",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ".",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/",
+                          {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "/39c41ddbab1e56477a9da571783e47cdea6fb24e7ab0f2b7330bfc4273717852.json"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnStack",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          },
+          "putPlayerRecordLambda_FUNC": {
+            "id": "putPlayerRecordLambda_FUNC",
+            "path": "WorkshopOne/putPlayerRecordLambda_FUNC",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "WorkshopOne/putPlayerRecordLambda_FUNC/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "WorkshopOne/putPlayerRecordLambda_FUNC/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/putPlayerRecordLambda_FUNC/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "WorkshopOne/putPlayerRecordLambda_FUNC/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "WorkshopOne/putPlayerRecordLambda_FUNC/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "LeaderboardDatabase1341F1A0",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "LeaderboardDatabase1341F1A0",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "putPlayerRecordLambdaFUNCServiceRoleDefaultPolicy30A51374",
+                            "roles": [
+                              {
+                                "Ref": "putPlayerRecordLambdaFUNCServiceRole30A39759"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.88.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.88.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "WorkshopOne/putPlayerRecordLambda_FUNC/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "WorkshopOne/putPlayerRecordLambda_FUNC/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "WorkshopOne/putPlayerRecordLambda_FUNC/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.88.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/putPlayerRecordLambda_FUNC/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "7ecb07057ea7883cdbd040efdffc5962b8059dcb680da1bb469fa39581b9c3fa.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "LeaderboardDatabase1341F1A0"
+                        }
+                      }
+                    },
+                    "ephemeralStorage": {
+                      "size": 512
+                    },
+                    "handler": "putPlayerRecord.handler",
+                    "memorySize": 512,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "putPlayerRecordLambdaFUNCServiceRole30A39759",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 300
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.88.0"
+            }
+          },
+          "gateway": {
+            "id": "gateway",
+            "path": "WorkshopOne/gateway",
+            "children": {
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "WorkshopOne/gateway/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "WorkshopOne/gateway/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "WorkshopOne/gateway/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.69"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.NestedStack",
+              "version": "2.88.0"
+            }
+          },
+          "gateway.NestedStack": {
+            "id": "gateway.NestedStack",
+            "path": "WorkshopOne/gateway.NestedStack",
+            "children": {
+              "gateway.NestedStackResource": {
+                "id": "gateway.NestedStackResource",
+                "path": "WorkshopOne/gateway.NestedStack/gateway.NestedStackResource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::Stack",
+                  "aws:cdk:cloudformation:props": {
+                    "templateUrl": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "https://s3.",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ".",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/",
+                          {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "/dc56ceab506c1f70ee9855db907133b1bd9f10a0692c9be8effd45db4550494d.json"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnStack",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          },
+          "gateway_G": {
+            "id": "gateway_G",
+            "path": "WorkshopOne/gateway_G",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/gateway_G/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Main Stack Gateway",
+                    "name": "gateway_G"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.88.0"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "WorkshopOne/gateway_G/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/gateway_G/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "description": "Main Stack Gateway",
+                        "restApiId": {
+                          "Ref": "gatewayG47300FE6"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.88.0"
+                }
+              },
+              "DeploymentStage.dev": {
+                "id": "DeploymentStage.dev",
+                "path": "WorkshopOne/gateway_G/DeploymentStage.dev",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/gateway_G/DeploymentStage.dev/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "deploymentId": {
+                          "Ref": "gatewayGDeployment5E93F03Fb66da4cce596bbf290a8e3f302625859"
+                        },
+                        "restApiId": {
+                          "Ref": "gatewayG47300FE6"
+                        },
+                        "stageName": "dev"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.88.0"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "WorkshopOne/gateway_G/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.88.0"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "WorkshopOne/gateway_G/Default",
+                "children": {
+                  "leaderboard": {
+                    "id": "leaderboard",
+                    "path": "WorkshopOne/gateway_G/Default/leaderboard",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "WorkshopOne/gateway_G/Default/leaderboard/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "gatewayG47300FE6",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "leaderboard",
+                            "restApiId": {
+                              "Ref": "gatewayG47300FE6"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.88.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "WorkshopOne/gateway_G/Default/leaderboard/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "OPTIONS",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{\"statusCode\": 200}"
+                                  },
+                                  "passthroughBehavior": "NEVER",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,AuthToken'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE'",
+                                        "method.response.header.Access-Control-Allow-Credentials": "'false'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true,
+                                      "method.response.header.Access-Control-Allow-Credentials": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ],
+                                "resourceId": {
+                                  "Ref": "gatewayGleaderboard21E1EA44"
+                                },
+                                "restApiId": {
+                                  "Ref": "gatewayG47300FE6"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.88.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.88.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "WorkshopOne/gateway_G/Default/leaderboard/POST",
+                        "children": {
+                          "ApiPermission.WorkshopOnegatewayGF860EA4F.POST..leaderboard": {
+                            "id": "ApiPermission.WorkshopOnegatewayGF860EA4F.POST..leaderboard",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/POST/ApiPermission.WorkshopOnegatewayGF860EA4F.POST..leaderboard",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "putPlayerRecordLambdaFUNC28F5A24A",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "gatewayG47300FE6"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "gatewayGDeploymentStagedev5D60EE63"
+                                      },
+                                      "/POST/leaderboard"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.88.0"
+                            }
+                          },
+                          "ApiPermission.Test.WorkshopOnegatewayGF860EA4F.POST..leaderboard": {
+                            "id": "ApiPermission.Test.WorkshopOnegatewayGF860EA4F.POST..leaderboard",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/POST/ApiPermission.Test.WorkshopOnegatewayGF860EA4F.POST..leaderboard",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "putPlayerRecordLambdaFUNC28F5A24A",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "gatewayG47300FE6"
+                                      },
+                                      "/test-invoke-stage/POST/leaderboard"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.88.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "putPlayerRecordLambdaFUNC28F5A24A",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "gatewayGleaderboard21E1EA44"
+                                },
+                                "restApiId": {
+                                  "Ref": "gatewayG47300FE6"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.88.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.88.0"
+                        }
+                      },
+                      "{playerId}": {
+                        "id": "{playerId}",
+                        "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "gatewayGleaderboard21E1EA44"
+                                },
+                                "pathPart": "{playerId}",
+                                "restApiId": {
+                                  "Ref": "gatewayG47300FE6"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.88.0"
+                            }
+                          },
+                          "OPTIONS": {
+                            "id": "OPTIONS",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/OPTIONS",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/OPTIONS/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "OPTIONS",
+                                    "integration": {
+                                      "type": "MOCK",
+                                      "requestTemplates": {
+                                        "application/json": "{\"statusCode\": 200}"
+                                      },
+                                      "passthroughBehavior": "NEVER",
+                                      "integrationResponses": [
+                                        {
+                                          "statusCode": "200",
+                                          "responseParameters": {
+                                            "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,AuthToken'",
+                                            "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE'",
+                                            "method.response.header.Access-Control-Allow-Credentials": "'false'",
+                                            "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "methodResponses": [
+                                      {
+                                        "statusCode": "200",
+                                        "responseParameters": {
+                                          "method.response.header.Access-Control-Allow-Headers": true,
+                                          "method.response.header.Access-Control-Allow-Methods": true,
+                                          "method.response.header.Access-Control-Allow-Credentials": true,
+                                          "method.response.header.Access-Control-Allow-Origin": true
+                                        }
+                                      }
+                                    ],
+                                    "resourceId": {
+                                      "Ref": "gatewayGleaderboardplayerIdDA8E7DBB"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "gatewayG47300FE6"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.88.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.88.0"
+                            }
+                          },
+                          "GET": {
+                            "id": "GET",
+                            "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/GET",
+                            "children": {
+                              "ApiPermission.WorkshopOnegatewayGF860EA4F.GET..leaderboard.{playerId}": {
+                                "id": "ApiPermission.WorkshopOnegatewayGF860EA4F.GET..leaderboard.{playerId}",
+                                "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/GET/ApiPermission.WorkshopOnegatewayGF860EA4F.GET..leaderboard.{playerId}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "getPlayerInfoLambdaFUNC204EF2E9",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:",
+                                          {
+                                            "Ref": "AWS::Region"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "gatewayG47300FE6"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "gatewayGDeploymentStagedev5D60EE63"
+                                          },
+                                          "/GET/leaderboard/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.88.0"
+                                }
+                              },
+                              "ApiPermission.Test.WorkshopOnegatewayGF860EA4F.GET..leaderboard.{playerId}": {
+                                "id": "ApiPermission.Test.WorkshopOnegatewayGF860EA4F.GET..leaderboard.{playerId}",
+                                "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/GET/ApiPermission.Test.WorkshopOnegatewayGF860EA4F.GET..leaderboard.{playerId}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "getPlayerInfoLambdaFUNC204EF2E9",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:",
+                                          {
+                                            "Ref": "AWS::Region"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "gatewayG47300FE6"
+                                          },
+                                          "/test-invoke-stage/GET/leaderboard/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.88.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "WorkshopOne/gateway_G/Default/leaderboard/{playerId}/GET/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "GET",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:",
+                                            {
+                                              "Ref": "AWS::Region"
+                                            },
+                                            ":lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "getPlayerInfoLambdaFUNC204EF2E9",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "gatewayGleaderboardplayerIdDA8E7DBB"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "gatewayG47300FE6"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.88.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.88.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.88.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
+              "version": "2.88.0"
+            }
+          },
+          "webDeployment": {
+            "id": "webDeployment",
+            "path": "WorkshopOne/webDeployment",
+            "children": {
+              "webDeployment_OAI": {
+                "id": "webDeployment_OAI",
+                "path": "WorkshopOne/webDeployment/webDeployment_OAI",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/webDeployment/webDeployment_OAI/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                      "aws:cdk:cloudformation:props": {
+                        "cloudFrontOriginAccessIdentityConfig": {
+                          "comment": "Allows CloudFront to reach the bucket"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+                  "version": "2.88.0"
+                }
+              },
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "WorkshopOne/webDeployment/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "WorkshopOne/webDeployment/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "WorkshopOne/webDeployment/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.69"
+                }
+              },
+              "WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACS3CanonicalUserId": {
+                "id": "WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACS3CanonicalUserId",
+                "path": "WorkshopOne/webDeployment/WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACS3CanonicalUserId",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.88.0"
+                }
+              },
+              "WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACRef": {
+                "id": "WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACRef",
+                "path": "WorkshopOne/webDeployment/WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACRef",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.NestedStack",
+              "version": "2.88.0"
+            }
+          },
+          "webDeployment.NestedStack": {
+            "id": "webDeployment.NestedStack",
+            "path": "WorkshopOne/webDeployment.NestedStack",
+            "children": {
+              "webDeployment.NestedStackResource": {
+                "id": "webDeployment.NestedStackResource",
+                "path": "WorkshopOne/webDeployment.NestedStack/webDeployment.NestedStackResource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::Stack",
+                  "aws:cdk:cloudformation:props": {
+                    "templateUrl": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "https://s3.",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ".",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/",
+                          {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "/62f83fd0cb8c21c554f5b3fd4600410e6aa8613c31fa17d39e20adebc20bd34f.json"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnStack",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          },
+          "webDeployment_CFD_ResponseHeadersPolicy": {
+            "id": "webDeployment_CFD_ResponseHeadersPolicy",
+            "path": "WorkshopOne/webDeployment_CFD_ResponseHeadersPolicy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/webDeployment_CFD_ResponseHeadersPolicy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::ResponseHeadersPolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "responseHeadersPolicyConfig": {
+                      "name": "WorkshopOnewebDeploymentCFDResponseHeadersPolicyDE7928BF",
+                      "securityHeadersConfig": {
+                        "contentTypeOptions": {
+                          "override": true
+                        },
+                        "frameOptions": {
+                          "frameOption": "SAMEORIGIN",
+                          "override": true
+                        },
+                        "strictTransportSecurity": {
+                          "accessControlMaxAge": {
+                            "amount": 365,
+                            "unit": {
+                              "label": "days",
+                              "isoLabel": "D",
+                              "inMillis": 86400000
+                            }
+                          },
+                          "includeSubdomains": true,
+                          "override": true,
+                          "accessControlMaxAgeSec": 31536000
+                        },
+                        "xssProtection": {
+                          "override": true,
+                          "protection": true,
+                          "modeBlock": true
+                        }
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnResponseHeadersPolicy",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.ResponseHeadersPolicy",
+              "version": "2.88.0"
+            }
+          },
+          "webDeployment_CFD_cachepolicy": {
+            "id": "webDeployment_CFD_cachepolicy",
+            "path": "WorkshopOne/webDeployment_CFD_cachepolicy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/webDeployment_CFD_cachepolicy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::CachePolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "cachePolicyConfig": {
+                      "name": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "WorkshopOnewebDeploymentCFDcachepolicy03588710-",
+                            {
+                              "Ref": "AWS::Region"
+                            }
+                          ]
+                        ]
+                      },
+                      "minTtl": 0,
+                      "maxTtl": 31536000,
+                      "defaultTtl": 3600,
+                      "parametersInCacheKeyAndForwardedToOrigin": {
+                        "cookiesConfig": {
+                          "cookieBehavior": "none"
+                        },
+                        "headersConfig": {
+                          "headerBehavior": "none"
+                        },
+                        "enableAcceptEncodingGzip": false,
+                        "enableAcceptEncodingBrotli": false,
+                        "queryStringsConfig": {
+                          "queryStringBehavior": "none"
+                        }
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnCachePolicy",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.CachePolicy",
+              "version": "2.88.0"
+            }
+          },
+          "webDeployment_CFD": {
+            "id": "webDeployment_CFD",
+            "path": "WorkshopOne/webDeployment_CFD",
+            "children": {
+              "Origin1": {
+                "id": "Origin1",
+                "path": "WorkshopOne/webDeployment_CFD/Origin1",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.69"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/webDeployment_CFD/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "origins": [
+                        {
+                          "domainName": {
+                            "Fn::GetAtt": [
+                              "StorageBucket19DB2FF8",
+                              "RegionalDomainName"
+                            ]
+                          },
+                          "id": "WorkshopOnewebDeploymentCFDOrigin14D951268",
+                          "s3OriginConfig": {
+                            "originAccessIdentity": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "origin-access-identity/cloudfront/",
+                                  {
+                                    "Fn::GetAtt": [
+                                      "webDeploymentNestedStackwebDeploymentNestedStackResource0F82DA22",
+                                      "Outputs.WorkshopOnewebDeploymentwebDeploymentOAI9AF24AACRef"
+                                    ]
+                                  }
+                                ]
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "defaultCacheBehavior": {
+                        "pathPattern": "*",
+                        "targetOriginId": "WorkshopOnewebDeploymentCFDOrigin14D951268",
+                        "allowedMethods": [
+                          "GET",
+                          "HEAD",
+                          "OPTIONS",
+                          "PUT",
+                          "PATCH",
+                          "POST",
+                          "DELETE"
+                        ],
+                        "cachePolicyId": {
+                          "Ref": "webDeploymentCFDcachepolicy39ECA2CC"
+                        },
+                        "compress": true,
+                        "responseHeadersPolicyId": {
+                          "Ref": "webDeploymentCFDResponseHeadersPolicyAE5C8A65"
+                        },
+                        "viewerProtocolPolicy": "redirect-to-https"
+                      },
+                      "customErrorResponses": [
+                        {
+                          "errorCachingMinTtl": 0,
+                          "errorCode": 404,
+                          "responseCode": 200,
+                          "responsePagePath": "/index.html"
+                        }
+                      ],
+                      "defaultRootObject": "index.html",
+                      "httpVersion": "http2",
+                      "ipv6Enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+              "version": "2.88.0"
+            }
+          },
+          "webDeployment_DeploymentBucket": {
+            "id": "webDeployment_DeploymentBucket",
+            "path": "WorkshopOne/webDeployment_DeploymentBucket",
+            "children": {
+              "AwsCliLayer": {
+                "id": "AwsCliLayer",
+                "path": "WorkshopOne/webDeployment_DeploymentBucket/AwsCliLayer",
+                "children": {
+                  "Code": {
+                    "id": "Code",
+                    "path": "WorkshopOne/webDeployment_DeploymentBucket/AwsCliLayer/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "WorkshopOne/webDeployment_DeploymentBucket/AwsCliLayer/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.AssetStaging",
+                          "version": "2.88.0"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "WorkshopOne/webDeployment_DeploymentBucket/AwsCliLayer/Code/AssetBucket",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                          "version": "2.88.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/webDeployment_DeploymentBucket/AwsCliLayer/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::LayerVersion",
+                      "aws:cdk:cloudformation:props": {
+                        "content": {
+                          "s3Bucket": {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "s3Key": "e2277687077a2abf9ae1af1cc9565e6715e2ebb62f79ec53aa75a1af9298f642.zip"
+                        },
+                        "description": "/opt/awscli/aws"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnLayerVersion",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.lambda_layer_awscli.AwsCliLayer",
+                  "version": "2.88.0"
+                }
+              },
+              "CustomResourceHandler": {
+                "id": "CustomResourceHandler",
+                "path": "WorkshopOne/webDeployment_DeploymentBucket/CustomResourceHandler",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.SingletonFunction",
+                  "version": "2.88.0"
+                }
+              },
+              "Asset1": {
+                "id": "Asset1",
+                "path": "WorkshopOne/webDeployment_DeploymentBucket/Asset1",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "WorkshopOne/webDeployment_DeploymentBucket/Asset1/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "WorkshopOne/webDeployment_DeploymentBucket/Asset1/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.88.0"
+                }
+              },
+              "CustomResource": {
+                "id": "CustomResource",
+                "path": "WorkshopOne/webDeployment_DeploymentBucket/CustomResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "WorkshopOne/webDeployment_DeploymentBucket/CustomResource/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3_deployment.BucketDeployment",
+              "version": "2.88.0"
+            }
+          },
+          "Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C": {
+            "id": "Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C",
+            "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetBucket*",
+                                    "s3:GetObject*",
+                                    "s3:List*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":s3:::",
+                                          {
+                                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":s3:::",
+                                          {
+                                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                                          }
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "s3:Abort*",
+                                    "s3:DeleteObject*",
+                                    "s3:GetBucket*",
+                                    "s3:GetObject*",
+                                    "s3:List*",
+                                    "s3:PutObject",
+                                    "s3:PutObjectLegalHold",
+                                    "s3:PutObjectRetention",
+                                    "s3:PutObjectTagging",
+                                    "s3:PutObjectVersionTagging"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StorageBucket19DB2FF8",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "StorageBucket19DB2FF8",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "cloudfront:CreateInvalidation",
+                                    "cloudfront:GetInvalidation"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+                            "roles": [
+                              {
+                                "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.88.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.88.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.88.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.88.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.88.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "WorkshopOne/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+                      }
+                    },
+                    "handler": "index.handler",
+                    "layers": [
+                      {
+                        "Ref": "webDeploymentDeploymentBucketAwsCliLayer2BE15239"
+                      }
+                    ],
+                    "role": {
+                      "Fn::GetAtt": [
+                        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.9",
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.88.0"
+            }
+          },
+          "Params": {
+            "id": "Params",
+            "path": "WorkshopOne/Params",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.88.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "WorkshopOne/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "WorkshopOne/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.88.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "WorkshopOne/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.88.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "WorkshopOne/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.88.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "WorkshopOne/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.88.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.88.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.2.69"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.88.0"
+    }
+  }
+}
