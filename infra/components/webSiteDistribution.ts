@@ -4,6 +4,7 @@ import { Construct } from 'constructs';
 import * as wafv2 from 'aws-cdk-lib/aws-wafv2';
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
+import * as helpers from './helperScripts';
 import { S3Bucket } from './s3';
 import * as path from 'path';
 import { restGateway } from './apigateway';
@@ -18,24 +19,20 @@ export class WebSiteDeployment extends cdk.NestedStack {
   constructor(scope: Construct, id: string, folderPath: string, rootObject: string = 'index.html', apiGateway: restGateway, s3Bucket: S3Bucket) {
     super(scope, id);
     const assetPath = path.join(__dirname, folderPath);
+    new BucketDeployment(scope, id + "_DeploymentBucket", {
+      sources: [s3deploy.Source.asset(assetPath)],
+      destinationBucket: s3Bucket
+    });
     this.apiUrl = apiGateway.url;
     const originalAccessIdentity = new cloudfront.OriginAccessIdentity(this, id + "_OAI");
-
     this.deploymentBucket = s3Bucket;
     this.deploymentBucket.grantRead(originalAccessIdentity);
     const s3Origin = new cloudfrontOrigins.S3Origin(this.deploymentBucket, {
       originAccessIdentity: originalAccessIdentity
-    })
+    });
     //const webacl = this.GetWebACL(scope, id);
-    this.cloudfrontDistribution = this.CreateCloudFrontDistribution(scope, id + "_CFD", s3Origin, rootObject)//, webacl);
-    new BucketDeployment(scope, id + "_DeploymentBucket", {
-      sources: [s3deploy.Source.asset(assetPath)],
-      destinationBucket: s3Bucket,
-      distribution: this.cloudfrontDistribution,
-      distributionPaths: ['/*'],
-    })
-  };
-  
+    this.cloudfrontDistribution=this.CreateCloudFrontDistribution(scope, id + "_CFD", s3Origin, rootObject);//, webacl);
+  }
   CreateCloudFrontDistribution(scope: Construct, id: string, s3Origin: cloudfrontOrigins.S3Origin, filePath: string, webACL?: wafv2.CfnWebACL) {
     return new cloudfront.Distribution(
       scope,
@@ -62,6 +59,7 @@ export class WebSiteDeployment extends cdk.NestedStack {
       defaultRootObject: filePath,
       //webAclId: webACL.attrArn,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021, // Required by security
+
     }
     )
   }
@@ -119,3 +117,4 @@ export class WebSiteDeployment extends cdk.NestedStack {
   }
  }
 }
+

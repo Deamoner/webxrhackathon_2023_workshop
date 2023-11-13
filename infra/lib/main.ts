@@ -3,6 +3,7 @@ import * as helpers from '../components/helperScripts';
 import { S3Bucket } from '../components/s3';
 import {  LambdaStack } from '../components/lambda';
 import { DDBTable } from '../components/ddb';
+import { CognitoStack } from '../components/cognito';
 import { restGatewayNestedStack } from '../components/apigateway';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
 import { BillingMode } from 'aws-cdk-lib/aws-dynamodb';
@@ -37,34 +38,44 @@ export class Main {
         type: ddb.AttributeType.NUMBER
       }
     })
-    
+
+    //Lambda layer
+    const storageEnvs = {
+      BUCKET_NAME: storageBucket.bucketName
+    };
+
     const highScoreEnvs = {
       TABLE_NAME: leaderboardDatabase.tableName
     }
 
     //Make Nested Lambda Stack(s)
-    /** Uncomment these lines for workshop step 3.1 
     const getHighScoreLambda = new LambdaStack(scope, "getPlayerInfoLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/getPlayerInfo', 'handler', cdk.Duration.minutes(5), 512, 512, highScoreEnvs);
     const putHighScoreLambda = new LambdaStack(scope, "putPlayerRecordLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/putPlayerRecord', 'handler', cdk.Duration.minutes(5), 512, 512, highScoreEnvs);
-    */
 
+    //Grant Lambda functions read/write access to DDB table
     leaderboardDatabase.grantReadData(getHighScoreLambda.lambdaFunction);
     leaderboardDatabase.grantReadWriteData(putHighScoreLambda.lambdaFunction);
+
+    //Build Cognito Stack
+    const cognitoStack = new CognitoStack(scope, "auth", true, true);
   
     //Build API Gateway
-    /** Uncomment these API Gateway creation for workshop Step 4 
     const apiGateway = new restGatewayNestedStack(scope, "gateway", "Main Stack Gateway", "dev").gateway;
-    apiGateway.AddMethodIntegration(putHighScoreLambda.MethodIntegration(), "leaderboard", "POST");
-    apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderboard/{playerId}", "GET");
+
+    /** Workshop two step 1.1, uncomment this code block to enable API Gateway with a Cognito authorizer enabled 
+    const apiAuthorizer = apiGateway.AddCognitoAuthorizer(scope, "API_Authorizer", [cognitoStack.userPool])
+    apiGateway.AddMethodIntegration(putHighScoreLambda.MethodIntegration(), "leaderboard", "POST", apiAuthorizer);
+    apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderboard/{playerId}", "GET", apiAuthorizer);
     */
-   
+
     //Upload Website
     const website = new WebSiteDeployment(scope, "webDeployment", '../../web/dist', 'index.html', apiGateway, storageBucket);
-       const configJson = {
-        ...storageBucket.ExportConfig(),
-        ...website.ExportConfig(),
-        ...apiGateway.ExportConfig()
-     }
+    const configJson = {
+         ...storageBucket.ExportConfig(),
+         ...apiGateway.ExportConfig(),
+         ...cognitoStack.ExportConfig(),
+         ...website.ExportConfig()
+    }
 
     helpers.OutputVariable(scope, "Params", configJson, "Configuration")
   }

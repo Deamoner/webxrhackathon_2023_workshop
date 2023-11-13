@@ -22,7 +22,7 @@ export declare class restGateway extends apig.RestApi {
     AddCognitoAuthorizer(scope: Construct, id: string, UserPools: cognito.UserPool[]): cdk.aws_apigateway.CognitoUserPoolsAuthorizer;
     AddAPIGAuthorizer(scope: Construct, id: string, authFn: lambda.Function): cdk.aws_apigateway.RequestAuthorizer;
     AddResource(FullPath: string): cdk.aws_apigateway.Resource;
-    AddMethodIntegration(integration: apig.AwsIntegration, route: string | undefined, methodString: string): boolean;
+    AddMethodIntegration(integration: apig.AwsIntegration, route: string | undefined, methodString: string, auth: apig.Authorizer): boolean;
     AttachWebACL(scope: Construct, id: string): cdk.aws_wafv2.CfnWebACLAssociation;
     GetWebACL(scope: Construct, id: string): cdk.aws_wafv2.CfnWebACL;
     ExportConfig(): {

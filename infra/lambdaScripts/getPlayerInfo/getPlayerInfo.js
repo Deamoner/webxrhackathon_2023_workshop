@@ -79,8 +79,6 @@ const getWorldRecordAndRanking = async (playerId) => {
     }
 }
 
-/** Uncomment this code block for workshop oen step 3.2, enable Lambda function to retrieve player score information
- * and ranking from DynamoDB
 export const handler = async (event, context) => {
     try {
         const playerId = event.pathParameters.playerId;
@@ -101,7 +99,7 @@ export const handler = async (event, context) => {
         return JsonResponse(500, "Error getting player info.");
     }
 }
-*/
+
 const JsonResponse = (statusCode, body, mime = 'application/json') => {
     let response = {};
     try {

@@ -33,6 +33,7 @@ export class restGateway extends apig.RestApi {
         this.id = id;
         this.apiGatewayURL = this.url;
         this.stageName = stageName;
+        helpers.OutputVariable(scope, 'API Rest URL', this.url, "Restful API Gateway URL");
     }
 
     addCorsOptions(resource: apig.Resource) {
@@ -114,11 +115,15 @@ export class restGateway extends apig.RestApi {
         return currentResource;
     }
 
-    AddMethodIntegration(integration: apig.AwsIntegration, route: string = "", methodString: string) {
+    AddMethodIntegration(integration: apig.AwsIntegration, route: string = "", methodString: string, auth: apig.Authorizer) {
         const resource = this.AddResource(route);
         const method = resource.addMethod(
             methodString,
-            integration,)
+            integration,
+            {
+                authorizer: auth,
+                authorizationType: auth.authorizationType
+            })
         return true;
     }
     AttachWebACL(scope: Construct, id: string) {

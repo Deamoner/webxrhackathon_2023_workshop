@@ -40,16 +40,11 @@ export class CognitoStack extends cdk.NestedStack {
                 email: false,
                 phone: false
             },
+            /** Workshop two step 1.2, uncomment this code block to trigger a lambda function after user signs up
             lambdaTriggers: {
                 preSignUp: preSignupFunction
             },
-            // standardAttributes: {
-            //     email: {
-            //         required: false,
-            //         mutable: true,
-            //     }
-            // },
-            //Allowing users to recover their account via SMS without MFA and using email 
+            */
             ...props
         });
         return userPool;

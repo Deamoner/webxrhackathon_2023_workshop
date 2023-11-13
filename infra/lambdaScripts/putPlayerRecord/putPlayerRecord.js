@@ -4,7 +4,6 @@ const dbClient = new DynamoDBClient({});
 
 const leaderboardTable = process.env.TABLE_NAME;
 
-/** Uncomment this code block for workshop one step 3.2, enable the lambda function to interact with DynamoDB
 export const handler = async (event, context) => {
     const body = JSON.parse(event.body);
     try {
@@ -23,7 +22,6 @@ export const handler = async (event, context) => {
 
     return JsonResponse(200, "High score stored.");
 }
-*/
 
 const JsonResponse = (statusCode, body, mime = 'application/json') => {
     let response = {};
